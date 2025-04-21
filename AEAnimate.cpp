@@ -33,7 +33,9 @@ class AEAnimator : public emp::web::Animate {
 
         Organism* new_org = new Organism(&random_gen_2);
         Grass* grass_org = new Grass(&random_gen_2);
+        std::cout << "Organism grass_org is "<< grass_org->SpeciesName() << std::endl;
         world.Inject(*grass_org);
+        std::cout << "Organism grass_org is "<< grass_org->SpeciesName() << std::endl;
         world.Inject(*new_org);
         world.Resize(num_w_boxes, num_h_boxes);
 

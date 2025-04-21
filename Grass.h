@@ -22,9 +22,9 @@ class Grass : public Organism {
 
         emp::Ptr<Organism> CheckReproduction() override {
             if (age == 3){
-                emp::Ptr<Grass> offspring = new Grass(random, 0.0);
-                offspring->SetPoints(0);
-                return offspring;
+                emp::Ptr<Grass> grassOffSpring = new Grass(random, 0.0);
+                grassOffSpring->SetPoints(0);
+                return grassOffSpring;
             }
             return nullptr;
         }
