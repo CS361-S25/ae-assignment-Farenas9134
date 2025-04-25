@@ -7,9 +7,13 @@
 class Organism {
     public:
     double points;
+    int age;
+    bool hasEaten = false;
+    int daysuntildead = 5;
+
     emp::Ptr<emp::Random> random;
 
-    Organism(emp::Ptr<emp::Random> _random, double _points=0.0) :
+    Organism(emp::Ptr<emp::Random> _random, double _points=0.0, int _age=0) :
         points(_points), random(_random) {;}
 
     void SetPoints(double _in) {points = _in;}
@@ -19,13 +23,21 @@ class Organism {
     // Updates point value by given points
     virtual void Process(double given_points) {
         points += given_points;
+        age++;
+        if (hasEaten == false){
+            daysuntildead--;
+        }
+        else {
+            daysuntildead = 3;
+        }
     }
 
     // If organism has 1000 points, it reproduces
     virtual emp::Ptr<Organism> CheckReproduction() {
-        if (points == 1000) {
+        if (points >= 1000) {
             emp::Ptr<Organism> offspring = new Organism(*this);
             offspring->SetPoints(0);
+            std::cout << "Org points set to zero" << std::endl;
             SetPoints(0);
             return offspring;
         }
@@ -48,6 +60,13 @@ class Organism {
         else {
             return false;
         }
+    }
+
+    virtual bool CheckShouldOrgDie() {
+        if (daysuntildead <= 0 && hasEaten == false){
+            return true;
+        }
+        return false;
     }
 };
 

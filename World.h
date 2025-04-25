@@ -34,11 +34,24 @@ class OrgWorld : public emp::World<Organism> {
         if(IsOccupied(i)){
             pop[i]->Process(pointsPerUpdate);
             std::vector<size_t> neighbors = GetValidNeighborOrgIDs(i);
+            bool AlreadyAte = false;
             for (int j:neighbors){
-                if (pop[i]->SpeciesEat(pop[j])){
+                if (pop[i]->SpeciesEat(pop[j]) && AlreadyAte == false){
                     ExtractOrganism(j);
-                    std::cout << "ATE THAT SHIT" << std::endl;
+                    std::cout << "ATE THAT" << std::endl;
+                    AlreadyAte = true;
+                    pop[i]->hasEaten = true;
                 }
+            }
+
+            if (AlreadyAte == false){
+                pop[i]->hasEaten = false;
+            }
+                // Never set hasEaten back to false. Need to do that when org doesn't eat
+
+            if (pop[i]->CheckShouldOrgDie()) {
+                std::cout << "Org died" << std::endl;
+                ExtractOrganism(i);
             }
         }
     }
@@ -50,6 +63,8 @@ class OrgWorld : public emp::World<Organism> {
 
             // If offspring is made, place into non-empty box
             if (offspring){
+                std::cout << "Reproduction!" << std::endl;
+
                 emp::WorldPosition birth_pos = GetRandomNeighborPos(i);
                 if (!IsOccupied(birth_pos)){
                     AddOrgAt(offspring, birth_pos.GetIndex());

@@ -4,6 +4,7 @@
 #include "World.h"
 #include "Org.h"
 #include "Grass.h"
+#include "Deer.h"
 
 emp::web::Document doc{"target"};
 
@@ -31,11 +32,7 @@ class AEAnimator : public emp::web::Animate {
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
-        Organism* new_org = new Organism(&random_gen_2);
-        Grass* grass_org = new Grass(&random_gen_2);
-        
-        world.AddOrgAt(new_org, 0);
-        world.AddOrgAt(grass_org, 50);
+        AddOrgs();
         
         world.Resize(num_w_boxes, num_h_boxes);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
@@ -57,7 +54,6 @@ class AEAnimator : public emp::web::Animate {
                 if (world.IsOccupied(org_num)) {
                     // Why are all my organisms just generic if one is a grass type and prints grass above?
                     std::string species = world[org_num].SpeciesName();
-                    std::cout << "Organism at position " << org_num << " is a " << species << std::endl;
                     if (species == "Grass"){
                         canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "green", "black");
                     }
@@ -72,7 +68,23 @@ class AEAnimator : public emp::web::Animate {
         }
     }
 
+    void AddOrgs() {
+        Deer* deer_org = new Deer(&random_gen_2);
+        Deer* deer_org2 = new Deer(&random_gen_2);
+        Deer* deer_org3 = new Deer(&random_gen_2);
+        Grass* grass_org = new Grass(&random_gen_2);
+        Grass* grass_org2 = new Grass(&random_gen_2);
+        
+        world.AddOrgAt(deer_org, 0);
+        world.AddOrgAt(deer_org2, 20);
+        world.AddOrgAt(deer_org3, 80);
+        world.AddOrgAt(grass_org, 50);
+        world.AddOrgAt(grass_org2, 70);
+    }
+
 };
+
+
 
 AEAnimator animator;
 

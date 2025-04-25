@@ -12,7 +12,7 @@ class Grass : public Organism {
         int age;
 
     public:
-        Grass(emp::Ptr<emp::Random> _random, double _points = 0.0)
+        Grass(emp::Ptr<emp::Random> _random, double _points = 0.0, int _age=0)
             : Organism(_random, _points), age(0) {}
 
         void Process(double given_points) override {
@@ -21,7 +21,7 @@ class Grass : public Organism {
         }
 
         emp::Ptr<Organism> CheckReproduction() override {
-            if (age == 3){
+            if (points >= 500){
                 emp::Ptr<Grass> grassOffSpring = new Grass(random, 0.0);
                 grassOffSpring->SetPoints(0);
                 return grassOffSpring;
@@ -35,6 +35,14 @@ class Grass : public Organism {
 
         std::string SpeciesColor() const override {
             return "green";
+        }
+
+        bool SpeciesEat(Organism *other) override {
+            return false;
+        } 
+
+        virtual bool CheckShouldOrgDie() override {
+            return false;
         }
 };
 
