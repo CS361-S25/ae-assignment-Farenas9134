@@ -33,6 +33,13 @@ class OrgWorld : public emp::World<Organism> {
     for (int i :schedule1){
         if(IsOccupied(i)){
             pop[i]->Process(pointsPerUpdate);
+            std::vector<size_t> neighbors = GetValidNeighborOrgIDs(i);
+            for (int j:neighbors){
+                if (pop[i]->SpeciesEat(pop[j])){
+                    ExtractOrganism(j);
+                    std::cout << "ATE THAT SHIT" << std::endl;
+                }
+            }
         }
     }
 
@@ -52,9 +59,7 @@ class OrgWorld : public emp::World<Organism> {
 
             // Move organisms to random neighboring position, if occupied stay put
             emp::WorldPosition newPosition = GetRandomNeighborPos(i);
-            //std::cout << "Organism grass_org is "<< i.SpeciesName() << std::endl;
             emp::Ptr<Organism> extracted_org = ExtractOrganism(i);
-            std::cout << "Organism grass_org is IN WORLD "<< extracted_org->SpeciesName() << std::endl;
             if (!IsOccupied(newPosition)){
                 AddOrgAt(extracted_org, newPosition);
             }

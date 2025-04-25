@@ -40,6 +40,15 @@ class Organism {
         return "black";
     }
 
+    virtual bool SpeciesEat(Organism* other) {
+        if (other->SpeciesName() == "Grass") {
+            points += 100;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 };
 
 #endif

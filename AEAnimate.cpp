@@ -33,12 +33,11 @@ class AEAnimator : public emp::web::Animate {
 
         Organism* new_org = new Organism(&random_gen_2);
         Grass* grass_org = new Grass(&random_gen_2);
-        std::cout << "Organism grass_org is "<< grass_org->SpeciesName() << std::endl;
-        world.Inject(*grass_org);
-        std::cout << "Organism grass_org is "<< grass_org->SpeciesName() << std::endl;
-        world.Inject(*new_org);
+        
+        world.AddOrgAt(new_org, 0);
+        world.AddOrgAt(grass_org, 50);
+        
         world.Resize(num_w_boxes, num_h_boxes);
-
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
 
         DrawSquares();
@@ -56,13 +55,14 @@ class AEAnimator : public emp::web::Animate {
         for (int x = 0; x < num_w_boxes; x++){
             for (int y = 0; y < num_h_boxes; y++) {
                 if (world.IsOccupied(org_num)) {
+                    // Why are all my organisms just generic if one is a grass type and prints grass above?
                     std::string species = world[org_num].SpeciesName();
                     std::cout << "Organism at position " << org_num << " is a " << species << std::endl;
                     if (species == "Grass"){
                         canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "green", "black");
                     }
                     else{
-                        canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "black", "black");
+                        canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "purple", "black");
                     }
                 } else {
                     canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "white", "black");
