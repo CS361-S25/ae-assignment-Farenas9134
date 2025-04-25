@@ -16,12 +16,13 @@ class Grass : public Organism {
             : Organism(_random, _points), age(0) {}
 
         void Process(double given_points) override {
-            AddPoints(given_points * 1.5);
+            AddPoints(10);
             age++;
         }
 
         emp::Ptr<Organism> CheckReproduction() override {
-            if (points >= 500){
+            if (points >= 250){
+                points = 0;
                 emp::Ptr<Grass> grassOffSpring = new Grass(random, 0.0);
                 grassOffSpring->SetPoints(0);
                 return grassOffSpring;

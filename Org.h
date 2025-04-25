@@ -25,10 +25,7 @@ class Organism {
         points += given_points;
         age++;
         if (hasEaten == false){
-            daysuntildead--;
-        }
-        else {
-            daysuntildead = 3;
+            points -= 20;
         }
     }
 
@@ -54,7 +51,8 @@ class Organism {
 
     virtual bool SpeciesEat(Organism* other) {
         if (other->SpeciesName() == "Grass") {
-            points += 100;
+            std::cout << "Deer ate!" << std::endl;
+            points += 120;
             return true;
         }
         else {
@@ -63,7 +61,7 @@ class Organism {
     }
 
     virtual bool CheckShouldOrgDie() {
-        if (daysuntildead <= 0 && hasEaten == false){
+        if (points <= -1000){
             return true;
         }
         return false;

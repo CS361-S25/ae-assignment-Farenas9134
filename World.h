@@ -22,7 +22,7 @@ class OrgWorld : public emp::World<Organism> {
     }
 
   void Update() {
-    double pointsPerUpdate = 100;
+    double pointsPerUpdate = 0;
 
     emp::World<Organism>::Update();
 
@@ -37,7 +37,7 @@ class OrgWorld : public emp::World<Organism> {
             bool AlreadyAte = false;
             for (int j:neighbors){
                 if (pop[i]->SpeciesEat(pop[j]) && AlreadyAte == false){
-                    ExtractOrganism(j);
+                    DeleteOrganism(j);
                     std::cout << "ATE THAT" << std::endl;
                     AlreadyAte = true;
                     pop[i]->hasEaten = true;
@@ -51,7 +51,7 @@ class OrgWorld : public emp::World<Organism> {
 
             if (pop[i]->CheckShouldOrgDie()) {
                 std::cout << "Org died" << std::endl;
-                ExtractOrganism(i);
+                DeleteOrganism(i);
             }
         }
     }
@@ -73,12 +73,14 @@ class OrgWorld : public emp::World<Organism> {
             }
 
             // Move organisms to random neighboring position, if occupied stay put
+            if (pop[i]->SpeciesName() != "Grass"){
             emp::WorldPosition newPosition = GetRandomNeighborPos(i);
             emp::Ptr<Organism> extracted_org = ExtractOrganism(i);
             if (!IsOccupied(newPosition)){
                 AddOrgAt(extracted_org, newPosition);
             }
             else {AddOrgAt(extracted_org, i);}
+        }
         }
     }
 }
@@ -88,6 +90,13 @@ class OrgWorld : public emp::World<Organism> {
         emp::Ptr<Organism> extracted_org = pop[orgPos];
         pop[orgPos] = nullptr;
         return extracted_org;
+    }
+
+    // Removes organism from initial position and deletes it
+    void DeleteOrganism(int orgPos){
+        emp::Ptr<Organism> extracted_org = pop[orgPos];
+        pop[orgPos] = nullptr;
+        delete(extracted_org);
     }
 
 };

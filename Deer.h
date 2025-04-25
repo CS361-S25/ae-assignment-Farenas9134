@@ -18,6 +18,28 @@ class Deer : public Organism {
         std::string SpeciesName() const override {
             return "Deer";
         }
+
+        void Process(double given_points) override {
+            AddPoints(-15);  // cost of metabolism
+            age++;
+        }
+
+        emp::Ptr<Organism> CheckReproduction() override {
+            if (points > 1200){
+                points = 200;
+                emp::Ptr<Deer> deerOffSpring = new Deer(random, 0.0);
+                deerOffSpring->SetPoints(0);
+                return deerOffSpring;
+            }
+            return nullptr;
+        }
+
+        bool CheckShouldOrgDie() override {
+            if (points <= -400){
+                return true;
+            }
+            return false;
+        }
 };
 
 #endif

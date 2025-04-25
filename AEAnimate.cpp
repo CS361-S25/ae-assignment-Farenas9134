@@ -5,6 +5,7 @@
 #include "Org.h"
 #include "Grass.h"
 #include "Deer.h"
+#include "Wolf.h"
 
 emp::web::Document doc{"target"};
 
@@ -15,8 +16,8 @@ OrgWorld world{random_gen_2};
 class AEAnimator : public emp::web::Animate {
 
     // arena width and height
-    const int num_h_boxes = 20;
-    const int num_w_boxes = 20;
+    const int num_h_boxes = 25;
+    const int num_w_boxes = 25;
     const double RECT_SIDE = 20;
     const double width{num_w_boxes * RECT_SIDE};
     const double height{num_h_boxes * RECT_SIDE};
@@ -32,10 +33,9 @@ class AEAnimator : public emp::web::Animate {
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
-        AddOrgs();
-        
         world.Resize(num_w_boxes, num_h_boxes);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
+        AddOrgs();
 
         DrawSquares();
 
@@ -57,8 +57,11 @@ class AEAnimator : public emp::web::Animate {
                     if (species == "Grass"){
                         canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "green", "black");
                     }
-                    else{
+                    if (species == "Deer"){
                         canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "purple", "black");
+                    }
+                    if (species == "Wolf"){
+                        canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "red", "black");
                     }
                 } else {
                     canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "white", "black");
@@ -69,17 +72,28 @@ class AEAnimator : public emp::web::Animate {
     }
 
     void AddOrgs() {
-        Deer* deer_org = new Deer(&random_gen_2);
-        Deer* deer_org2 = new Deer(&random_gen_2);
-        Deer* deer_org3 = new Deer(&random_gen_2);
+        for (int i = 0; i < 80; i++){
+            CreateandAddGrass(random_gen_2);
+        }
+        CreateandAddDeer(random_gen_2);
+        //CreateandAddWolf(random_gen_2);
+        //CreateandAddDeer(random_gen_2);
+        //CreateandAddWolf(random_gen_2);
+    }
+
+    void CreateandAddGrass(emp::Random &ran) {
         Grass* grass_org = new Grass(&random_gen_2);
-        Grass* grass_org2 = new Grass(&random_gen_2);
-        
-        world.AddOrgAt(deer_org, 0);
-        world.AddOrgAt(deer_org2, 20);
-        world.AddOrgAt(deer_org3, 80);
-        world.AddOrgAt(grass_org, 50);
-        world.AddOrgAt(grass_org2, 70);
+        world.AddOrgAt(grass_org, ran.GetInt(0, world.GetSize()));
+    }
+
+    void CreateandAddDeer(emp::Random &ran) {
+        Deer* deer_org = new Deer(&random_gen_2, 400);
+        world.AddOrgAt(deer_org, ran.GetInt(0, world.GetSize()));
+    }
+
+    void CreateandAddWolf(emp::Random &ran) {
+        Wolf* wolf_org = new Wolf(&random_gen_2);
+        world.AddOrgAt(wolf_org, ran.GetInt(0, world.GetSize()));
     }
 
 };
