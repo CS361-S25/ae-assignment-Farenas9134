@@ -1,23 +1,30 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/-GCLf3vW)
 
-Ecosystem Simulation: Grass and Deer
+Ecosystem Simulation: Grass, Deer, adn Wolves
 
-Organisms
+Organisms:
 
-Grass
+Grass:
 
-Growth rate: +10 points per time step
+Growth rate: +20 points per time step
 Reproduction threshold: 250 points
 Cannot die or be eaten by anything except deer
 
-Deer
+Deer:
+
+Metabolism cost: -30 points per time step
+Reproduction threshold: 900 points
+Death threshold: -400 points
+Can eat Grass to gain energy (200 points)
+
+Wolf:
 
 Metabolism cost: -15 points per time step
-Reproduction threshold: 1200 points
-Death threshold: -400 points
-Can eat Grass to gain energy
+Reproduction threshold: 1000 points
+Death threshold: -9000 points
+Can eat deer to gain energy (700 points)
 
 Interaction
 
-Predation interaction where the deer organisms are eating the grass. Current issue where deer overgraze and eat all the grass.
+Predation interactions where deer organisms eat the grass, and wolves eat the deer in return.
 

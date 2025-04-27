@@ -29,9 +29,21 @@ class AEAnimator : public emp::web::Animate {
     AEAnimator() {
         // shove canvas into the div
         // along with a control button
+        doc << "<h1> Artifical Ecology </h1>";
         doc << canvas;
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
+        doc << "<h2> Species: </h2>";
+        doc << "<strong>Grass (Green) </strong>: Represented by the green boxes, the Grass serve as the primary producers in this simulation. <br>" 
+                "<b> Deer (Blue) </b>: Represented by the blue boxes, the deer serve as the primary consumers.<br>"
+                "<strong> Wolf (Red) </strong>: Represented by the red boxes, the wolves keep the deer in check and are this simulation's apex predator."
+                
+                "<h2> Interactions </h2>"
+                "This Simulation displays varying relationships and interactions between the three species. For one, there is a basic predation interaction"
+                "between deer and grass, and wolves and deers. The deer graze on the grass, while attempting to escape the hungry wolves."
+                "Between the wolves and grass, there is sort of a mutualistic realtionship. When the wolves eat deer, the grass population flourishes."
+                "In return, more grass draws in a bigger deer population benefitting the wolves.";
+
 
         world.Resize(num_w_boxes, num_h_boxes);
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
@@ -73,8 +85,8 @@ class AEAnimator : public emp::web::Animate {
 
     void AddOrgs() {
         CreateandAddGrass(random_gen_2, 80);
-        CreateandAddDeer(random_gen_2, 4);
-        CreateandAddWolf(random_gen_2, 2);
+        CreateandAddDeer(random_gen_2, 12);
+        CreateandAddWolf(random_gen_2, 4);
     }
 
     void CreateandAddGrass(emp::Random &ran, int num) {
@@ -93,7 +105,7 @@ class AEAnimator : public emp::web::Animate {
 
     void CreateandAddWolf(emp::Random &ran, int num) {
         for (int i = 0; i < num; i++){
-            Wolf* wolf_org = new Wolf(&random_gen_2, 400);
+            Wolf* wolf_org = new Wolf(&random_gen_2, 800);
             world.AddOrgAt(wolf_org, ran.GetInt(0, world.GetSize()));
         }
     }

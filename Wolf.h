@@ -21,7 +21,7 @@ class Wolf : public Organism {
 
         virtual bool SpeciesEat(Organism* other) override {
             if (other->SpeciesName() == "Deer") {
-                points += 600;
+                points += 700;
                 return true;
             }
             else {
@@ -30,7 +30,7 @@ class Wolf : public Organism {
         }
 
         emp::Ptr<Organism> CheckReproduction() override {
-            if (points >= 2000){
+            if (points >= 1000){
                 SetPoints(0);
                 emp::Ptr<Wolf> wolfOffSpring = new Wolf(random, 0.0);
                 wolfOffSpring->SetPoints(0);
@@ -40,7 +40,7 @@ class Wolf : public Organism {
         }
 
         bool CheckShouldOrgDie() override {
-            if (points <= -4500){
+            if (points <= -9000){
                 return true;
             }
             return false;
@@ -49,7 +49,7 @@ class Wolf : public Organism {
         void Process(double given_points) override {
             points += given_points;
             if (hasEaten == false){
-                points -= 200;
+                points -= 15;
             }
         }
 };

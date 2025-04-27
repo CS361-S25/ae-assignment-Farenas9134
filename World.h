@@ -79,6 +79,7 @@ class OrgWorld : public emp::World<Organism> {
         for (int i :schedule){
             if(IsOccupied(i)){
                 pop[i]->Process(points);
+                pop[i]->hasEaten = false;
     
                 if (pop[i]->CheckShouldOrgDie()) {
                     DeleteOrganism(i);
@@ -105,7 +106,7 @@ class OrgWorld : public emp::World<Organism> {
 
         else {
             bool wasEaten = EatSpecies(extracted_org, newPosition.GetIndex());
-            
+
             if (!wasEaten){
                 AddOrgAt(extracted_org, pos);
             }
