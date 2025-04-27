@@ -16,7 +16,7 @@ class Grass : public Organism {
             : Organism(_random, _points), age(0) {}
 
         void Process(double given_points) override {
-            AddPoints(10);
+            AddPoints(20);
             age++;
         }
 

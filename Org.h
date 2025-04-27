@@ -51,7 +51,6 @@ class Organism {
 
     virtual bool SpeciesEat(Organism* other) {
         if (other->SpeciesName() == "Grass") {
-            std::cout << "Deer ate!" << std::endl;
             points += 120;
             return true;
         }

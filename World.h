@@ -30,31 +30,7 @@ class OrgWorld : public emp::World<Organism> {
     emp::vector<size_t> schedule2 = emp::GetPermutation(random, GetSize());
 
     // Calls the process function for each organism
-    for (int i :schedule1){
-        if(IsOccupied(i)){
-            pop[i]->Process(pointsPerUpdate);
-            std::vector<size_t> neighbors = GetValidNeighborOrgIDs(i);
-            bool AlreadyAte = false;
-            for (int j:neighbors){
-                if (pop[i]->SpeciesEat(pop[j]) && AlreadyAte == false){
-                    DeleteOrganism(j);
-                    std::cout << "ATE THAT" << std::endl;
-                    AlreadyAte = true;
-                    pop[i]->hasEaten = true;
-                }
-            }
-
-            if (AlreadyAte == false){
-                pop[i]->hasEaten = false;
-            }
-                // Never set hasEaten back to false. Need to do that when org doesn't eat
-
-            if (pop[i]->CheckShouldOrgDie()) {
-                std::cout << "Org died" << std::endl;
-                DeleteOrganism(i);
-            }
-        }
-    }
+    CallProcesses(schedule1, pointsPerUpdate);
 
     // Checks conditions for reproduction and lets organisms move
     for (int i : schedule2){
@@ -63,24 +39,13 @@ class OrgWorld : public emp::World<Organism> {
 
             // If offspring is made, place into non-empty box
             if (offspring){
-                std::cout << "Reproduction!" << std::endl;
-
-                emp::WorldPosition birth_pos = GetRandomNeighborPos(i);
-                if (!IsOccupied(birth_pos)){
-                    AddOrgAt(offspring, birth_pos.GetIndex());
-                }
-                else{delete offspring;}
+                PlaceOffspring(offspring, i);
             }
 
-            // Move organisms to random neighboring position, if occupied stay put
+            // Move non-grass organisms to random neighboring position, if occupied check if can be eaten
             if (pop[i]->SpeciesName() != "Grass"){
-            emp::WorldPosition newPosition = GetRandomNeighborPos(i);
-            emp::Ptr<Organism> extracted_org = ExtractOrganism(i);
-            if (!IsOccupied(newPosition)){
-                AddOrgAt(extracted_org, newPosition);
+                MoveOrg(i);
             }
-            else {AddOrgAt(extracted_org, i);}
-        }
         }
     }
 }
@@ -97,6 +62,54 @@ class OrgWorld : public emp::World<Organism> {
         emp::Ptr<Organism> extracted_org = pop[orgPos];
         pop[orgPos] = nullptr;
         delete(extracted_org);
+    }
+
+    bool EatSpecies (emp::Ptr<Organism> given_org, int position){
+        // Check if org can eat species at occupied area
+        if(given_org->SpeciesEat(pop[position])){
+            DeleteOrganism(pop[position]);
+            given_org->hasEaten = true;
+            AddOrgAt(given_org, position);
+            return true;
+        }
+        return false;
+    }
+
+    void CallProcesses (emp::vector<size_t> schedule, int points) {
+        for (int i :schedule){
+            if(IsOccupied(i)){
+                pop[i]->Process(points);
+    
+                if (pop[i]->CheckShouldOrgDie()) {
+                    DeleteOrganism(i);
+                }
+            }
+        }
+    }
+
+    void PlaceOffspring(emp::Ptr<Organism> offspring, int parent_pos){
+        emp::WorldPosition birth_pos = GetRandomNeighborPos(parent_pos);
+        if (!IsOccupied(birth_pos)){
+            AddOrgAt(offspring, birth_pos.GetIndex());
+            }
+        else{delete offspring;}
+    }
+
+    void MoveOrg(int pos) {
+        emp::WorldPosition newPosition = GetRandomNeighborPos(pos);
+        emp::Ptr<Organism> extracted_org = ExtractOrganism(pos);
+
+        if (!IsOccupied(newPosition)){
+            AddOrgAt(extracted_org, newPosition);
+        }
+
+        else {
+            bool wasEaten = EatSpecies(extracted_org, newPosition.GetIndex());
+            
+            if (!wasEaten){
+                AddOrgAt(extracted_org, pos);
+            }
+        }
     }
 
 };

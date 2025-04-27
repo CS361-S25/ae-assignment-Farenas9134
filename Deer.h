@@ -20,12 +20,12 @@ class Deer : public Organism {
         }
 
         void Process(double given_points) override {
-            AddPoints(-15);  // cost of metabolism
+            AddPoints(-30);  // cost of metabolism
             age++;
         }
 
         emp::Ptr<Organism> CheckReproduction() override {
-            if (points > 1200){
+            if (points > 900){
                 points = 200;
                 emp::Ptr<Deer> deerOffSpring = new Deer(random, 0.0);
                 deerOffSpring->SetPoints(0);

@@ -58,7 +58,7 @@ class AEAnimator : public emp::web::Animate {
                         canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "green", "black");
                     }
                     if (species == "Deer"){
-                        canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "purple", "black");
+                        canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "blue", "black");
                     }
                     if (species == "Wolf"){
                         canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "red", "black");
@@ -72,28 +72,30 @@ class AEAnimator : public emp::web::Animate {
     }
 
     void AddOrgs() {
-        for (int i = 0; i < 80; i++){
-            CreateandAddGrass(random_gen_2);
+        CreateandAddGrass(random_gen_2, 80);
+        CreateandAddDeer(random_gen_2, 4);
+        CreateandAddWolf(random_gen_2, 2);
+    }
+
+    void CreateandAddGrass(emp::Random &ran, int num) {
+        for (int i = 0; i < num; i++){
+            Grass* grass_org = new Grass(&random_gen_2);
+            world.AddOrgAt(grass_org, ran.GetInt(0, world.GetSize()));
         }
-        CreateandAddDeer(random_gen_2);
-        //CreateandAddWolf(random_gen_2);
-        //CreateandAddDeer(random_gen_2);
-        //CreateandAddWolf(random_gen_2);
     }
 
-    void CreateandAddGrass(emp::Random &ran) {
-        Grass* grass_org = new Grass(&random_gen_2);
-        world.AddOrgAt(grass_org, ran.GetInt(0, world.GetSize()));
+    void CreateandAddDeer(emp::Random &ran, int num) {
+        for (int i = 0; i < num; i++){
+            Deer* deer_org = new Deer(&random_gen_2, 400);
+            world.AddOrgAt(deer_org, ran.GetInt(0, world.GetSize()));
+        }
     }
 
-    void CreateandAddDeer(emp::Random &ran) {
-        Deer* deer_org = new Deer(&random_gen_2, 400);
-        world.AddOrgAt(deer_org, ran.GetInt(0, world.GetSize()));
-    }
-
-    void CreateandAddWolf(emp::Random &ran) {
-        Wolf* wolf_org = new Wolf(&random_gen_2);
-        world.AddOrgAt(wolf_org, ran.GetInt(0, world.GetSize()));
+    void CreateandAddWolf(emp::Random &ran, int num) {
+        for (int i = 0; i < num; i++){
+            Wolf* wolf_org = new Wolf(&random_gen_2, 400);
+            world.AddOrgAt(wolf_org, ran.GetInt(0, world.GetSize()));
+        }
     }
 
 };
