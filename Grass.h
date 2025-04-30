@@ -8,18 +8,26 @@
 #include "Org.h"
 
 class Grass : public Organism {
-    private:
-        int age;
 
     public:
-        Grass(emp::Ptr<emp::Random> _random, double _points = 0.0, int _age=0)
-            : Organism(_random, _points), age(0) {}
+        Grass(emp::Ptr<emp::Random> _random, double _points = 0.0)
+            : Organism(_random, _points) {}
 
+        /*
+            Input: double type
+            Output: Void
+            Purpose: Updates specied amount of points for a deer organism
+        */
         void Process(double given_points) override {
             AddPoints(20);
-            age++;
         }
 
+        /*
+            Input: Void
+            Output: emp::Ptr<Organism>
+            Purpose: Checks if organism meets reproduction requirements, returns 
+                     organism type pointer if conditions met. Null pointer otherwise
+        */
         emp::Ptr<Organism> CheckReproduction() override {
             if (points >= 250){
                 points = 0;
@@ -30,18 +38,29 @@ class Grass : public Organism {
             return nullptr;
         }
 
+        /*
+            Input: Void
+            Output: std::string
+            Purpose: Returns name of the species, grass in this case
+        */
         std::string SpeciesName() const override {
             return "Grass";
         }
 
-        std::string SpeciesColor() const override {
-            return "green";
-        }
-
+        /*
+            Input: Organism class
+            Output: Bool
+            Purpose: Decides if organism can eat passed in org. Grass returns false as it does not eat.
+        */
         bool SpeciesEat(Organism *other) override {
             return false;
         } 
 
+        /*
+            Input: Void
+            Output: Bool
+            Purpose: Decides if organism meets death criteria. Grass does not die from point threshold, so returns false
+        */
         virtual bool CheckShouldOrgDie() override {
             return false;
         }

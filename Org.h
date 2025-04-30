@@ -7,29 +7,35 @@
 class Organism {
     public:
     double points;
-    int age;
     bool hasEaten = false;
-    int daysuntildead = 5;
 
     emp::Ptr<emp::Random> random;
 
-    Organism(emp::Ptr<emp::Random> _random, double _points=0.0, int _age=0) :
+    Organism(emp::Ptr<emp::Random> _random, double _points=0.0) :
         points(_points), random(_random) {;}
 
     void SetPoints(double _in) {points = _in;}
     void AddPoints(double _in) {points += _in;}
 
 
-    // Updates point value by given points
+    /*
+        Input: double type
+        Output: Void
+        Purpose: Updates specied amount of points for a deer organism
+    */
     virtual void Process(double given_points) {
         points += given_points;
-        age++;
         if (hasEaten == false){
             points -= 20;
         }
     }
 
-    // If organism has 1000 points, it reproduces
+    /*
+        Input: Void
+        Output: emp::Ptr<Organism>
+        Purpose: Checks if organism meets reproduction requirements, returns 
+                 organism type pointer if conditions met. Null pointer otherwise
+    */
     virtual emp::Ptr<Organism> CheckReproduction() {
         if (points >= 1000) {
             emp::Ptr<Organism> offspring = new Organism(*this);
@@ -41,14 +47,20 @@ class Organism {
         return nullptr;
     }
 
+    /*
+        Input: Void
+        Output: std::string
+        Purpose: Returns name of the species, generic organism in this case
+    */
     virtual std::string SpeciesName() const{
         return "Generic";
     }
 
-    virtual std::string SpeciesColor() const{
-        return "black";
-    }
-
+    /*
+        Input: Organism class
+        Output: Bool
+        Purpose: Decides if organism can eat passed in org. Defaults to only eating grass
+    */
     virtual bool SpeciesEat(Organism* other) {
         if (other->SpeciesName() == "Grass") {
             points += 120;
@@ -59,6 +71,11 @@ class Organism {
         }
     }
 
+    /*
+        Input: Void
+        Output: Bool
+        Purpose: Decides if organism meets death criteria
+    */
     virtual bool CheckShouldOrgDie() {
         if (points <= -1000){
             return true;

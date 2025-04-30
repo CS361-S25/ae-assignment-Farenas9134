@@ -8,22 +8,35 @@
 #include "Org.h"
 
 class Deer : public Organism {
-    private:
-        int age;
 
     public:
-        Deer(emp::Ptr<emp::Random> _random, double _points = 0.0, int _age=0)
-            : Organism(_random, _points), age(0) {}
+        Deer(emp::Ptr<emp::Random> _random, double _points = 0.0)
+            : Organism(_random, _points) {}
 
+        /*
+            Input: Void
+            Output: std::string
+            Purpose: Returns name of the species, deer in this case
+        */
         std::string SpeciesName() const override {
             return "Deer";
         }
 
+        /*
+            Input: double type
+            Output: Void
+            Purpose: Updates specied amount of points for a deer organism
+        */
         void Process(double given_points) override {
             AddPoints(-30);  // cost of metabolism
-            age++;
         }
 
+        /*
+            Input: Void
+            Output: emp::Ptr<Organism>
+            Purpose: Checks if organism meets reproduction requirements, returns 
+                     organism type pointer if conditions met. Null pointer otherwise
+        */
         emp::Ptr<Organism> CheckReproduction() override {
             if (points > 900){
                 points = 200;
@@ -34,6 +47,11 @@ class Deer : public Organism {
             return nullptr;
         }
 
+        /*
+            Input: Void
+            Output: Bool
+            Purpose: Checks if organism meets death requirements. If yes, returns true
+        */
         bool CheckShouldOrgDie() override {
             if (points <= -400){
                 return true;
